@@ -29,6 +29,7 @@ export class ChromePlugin {
     this.pluginClient.run()
   }
   async didStop () {
+    this.debugger.disconnect()
     this.launcher.stop()
     this.pluginClient.stop()
   }
