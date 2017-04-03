@@ -1,63 +1,43 @@
-'use babel'
-
+import { ChromeDebuggingProtocolPlugin } from '/Users/willyelm/Github/atom-bugs-chrome-debugger/lib/plugin'
 import { ChromeLauncher } from './chrome-launcher'
 import { ChromeDebugger } from './chrome-debugger'
-import { ChromeOptions } from './chrome-options'
+import { BinaryType, ChromeOptions } from './chrome-options'
+import { join } from 'path'
 
-export class ChromePlugin {
-  private pluginClient: any
-  private launcher: ChromeLauncher = new ChromeLauncher()
-  private debugger: ChromeDebugger = new ChromeDebugger()
+export class ChromePlugin extends ChromeDebuggingProtocolPlugin {
+
   public options: Object = ChromeOptions
   public name: String = 'Google Chrome'
   public iconPath: String = 'atom://atom-bugs-chrome/icons/chrome.svg'
+  public launcher: ChromeLauncher = new ChromeLauncher()
+  public debugger: ChromeDebugger = new ChromeDebugger()
+
   constructor () {
-    // launcher listeners
-    this.launcher.didStop(() => this.pluginClient.stop())
+    super()
+    this.addEventListeners()
   }
-  register (client) {
-    this.pluginClient = client
+  didLoad () {
+    // reload page to activate breakpoints
+    this.debugger.domains.Page.reload()
   }
   async didRun () {
     this.pluginClient.console.clear()
+    let options = await this.pluginClient.getOptions()
     // run chrome
     this.launcher.hostName = 'localhost'
-    this.launcher.portNumber = 9222
+    this.launcher.portNumber = options.portNumber
+    if (options.binaryPath === BinaryType.Custom) {
+      this.launcher.customBinaryPath = options.customBinaryPath
+    }
+    let projectPath = this.pluginClient.getPath()
+    this.debugger.serverUrl = options.serverUrl
+    this.debugger.contextPath = join(projectPath, options.basePath)
     let socketUrl = await this.launcher.start()
-    this.debugger.connect(socketUrl)
-    // set client as run
+    await this.debugger.connect(socketUrl)
+    await this.debugger.domains.Page.navigate({
+      url: options.serverUrl
+    })
+    // set toolbar as run
     this.pluginClient.run()
-  }
-  async didStop () {
-    this.debugger.disconnect()
-    this.launcher.stop()
-    this.pluginClient.stop()
-  }
-  async didResume () {
-
-  }
-  async didPause () {
-
-  }
-  async didAddBreakpoint (filePath, lineNumber) {
-
-  }
-  async didRemoveBreakpoint (filePath, lineNumber) {
-
-  }
-  async didStepOver () {
-
-  }
-  async didStepInto () {
-
-  }
-  async didStepOut () {
-
-  }
-  async didRequestProperties (request, propertyView) {
-
-  }
-  async didEvaluateExpression (expression: string, evaluationView) {
-
   }
 }

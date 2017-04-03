@@ -9,7 +9,7 @@ export declare const ChromeOptions: {
         default: string;
         enum: string[];
     };
-    customPath: {
+    customBinaryPath: {
         type: string;
         title: string;
         default: string;
@@ -23,5 +23,17 @@ export declare const ChromeOptions: {
         type: string;
         title: string;
         default: string;
+    };
+    basePath: {
+        type: string;
+        title: string;
+        default: string;
+        description: string;
+    };
+    portNumber: {
+        type: string;
+        title: string;
+        default: number;
+        description: string;
     };
 };

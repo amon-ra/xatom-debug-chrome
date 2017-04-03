@@ -1,36 +1,44 @@
-'use babel'
+import { ChromeDebuggingProtocolDebugger } from 'atom-bugs-chrome-debugger/lib/debugger'
 
-import { EventEmitter }  from 'events'
-import { ConsoleMessage, ChromeDebuggingProtocol }  from '/Users/willyelm/Github/chrome-debugging-protocol/lib/index'
-import { dirname } from 'path'
-
-export class ChromeDebugger {
-  private protocol: ChromeDebuggingProtocol
-  async connect (socketUrl: string) {
-    this.protocol = new ChromeDebuggingProtocol(socketUrl)
-    var { Console, Debugger, Page } = await this.protocol.connect()
-    await Console.enable()
-    await Debugger.enable()
-    await Debugger.setBreakpointsActive({
-      active: true
-    })
-    await Page.navigate({
-      url: 'http://127.0.0.1:8080'
-    })
-    Console.messageAdded((params: ConsoleMessage) => {
-      console.log('message added', params)
-    })
-    Debugger.scriptParsed((params) => {
-      console.log('script parsed', params)
-    })
+export class ChromeDebugger extends ChromeDebuggingProtocolDebugger {
+  public domains: any
+  public contextPath: string
+  public serverUrl: string
+  constructor () {
+    super()
   }
-  async disconnect () {
-    if (this.protocol) {
-      this.protocol.disconnect()
-      this.protocol = null
-    }
+  getFilePathFromUrl (fileUrl: string): string {
+    let filePath = fileUrl.replace(this.serverUrl, this.contextPath)
+    return filePath
   }
-  getPages () {
+  getUrlFromFilePath (filePath: string) {
+    let fileUrl = filePath.replace(this.contextPath, this.serverUrl)
+    return fileUrl
+  }
+  getFeatures (): Array<Promise<any>> {
+    var {
+      Profiler,
+      Runtime,
+      Debugger,
+      Page
+    } = this.domains
 
+    Debugger.paused(() => {
+      Page.configureOverlay({
+        message: 'Paused from Atom Bugs'
+      })
+    })
+    Debugger.resumed(() => {
+      Page.configureOverlay({})
+    })
+
+    return [
+      Page.enable(),
+      Runtime.enable(),
+      Debugger.enable(),
+      Debugger.setBreakpointsActive({
+        active: true
+      })
+    ]
   }
 }

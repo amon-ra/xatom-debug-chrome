@@ -1,6 +1,6 @@
-export declare class ChromeDebugger {
-    private protocol;
-    connect(socketUrl: string): Promise<void>;
-    disconnect(): Promise<void>;
-    getPages(): void;
+import { ChromeDebuggingProtocolDebugger } from 'atom-bugs-chrome-debugger/lib/debugger';
+export declare class ChromeDebugger extends ChromeDebuggingProtocolDebugger {
+    domains: any;
+    constructor();
+    getFeatures(): Array<Promise<any>>;
 }
