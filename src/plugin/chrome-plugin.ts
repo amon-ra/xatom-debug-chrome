@@ -30,8 +30,20 @@ export class ChromePlugin extends ChromeDebuggingProtocolPlugin {
       this.launcher.customBinaryPath = options.customBinaryPath
     }
     let projectPath = this.pluginClient.getPath()
+    let contextPath = join(projectPath, options.basePath)
+    this.debugger.basePath = projectPath
     this.debugger.serverUrl = options.serverUrl
-    this.debugger.contextPath = join(projectPath, options.basePath)
+
+    this.debugger.mappingPaths = {}
+    this.debugger.mappingPaths[options.serverUrl] = contextPath
+    this.debugger.mappingPaths[contextPath] = options.serverUrl
+    // add defined mappings
+    Object
+      .keys(options.mappingPaths || {})
+      .forEach((origin) => {
+        this.debugger.mappingPaths[origin] = join(projectPath, '/', options.mappingPaths[origin])
+      })
+
     let socketUrl = await this.launcher.start()
     await this.debugger.connect(socketUrl)
     await this.debugger.domains.Page.navigate({

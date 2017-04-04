@@ -23,9 +23,15 @@ export const ChromeOptions = {
       }
     }
   },
+  portNumber: {
+    type: 'number',
+    title: 'Port Number',
+    default: 9222,
+    description: 'Port to use to run the debugger'
+  },
   serverUrl: {
     type: 'string',
-    title: 'Server Address',
+    title: 'Web Address',
     default: 'http://localhost:8080'
   },
   basePath: {
@@ -34,10 +40,10 @@ export const ChromeOptions = {
     default: 'dist/',
     description: 'Relative project path files location for the provided server. ex: dist/'
   },
-  portNumber: {
-    type: 'number',
-    title: 'Port Number',
-    default: 9222,
-    description: 'Port to use to run the debugger'
+  mappingPaths: {
+    type: 'object',
+    title: 'Path Mappings',
+    default: {},
+    description: 'Source map path overrides, useful for advanced bundle tools like webpack.'
   }
 }

@@ -1,19 +1,34 @@
 import { ChromeDebuggingProtocolDebugger } from 'atom-bugs-chrome-debugger/lib/debugger'
+import { join, normalize } from 'path'
 
 export class ChromeDebugger extends ChromeDebuggingProtocolDebugger {
-  public domains: any
-  public contextPath: string
+  public basePath: string
+  public mappingPaths: Object
   public serverUrl: string
   constructor () {
     super()
   }
   getFilePathFromUrl (fileUrl: string): string {
-    let filePath = fileUrl.replace(this.serverUrl, this.contextPath)
+    let filePath = fileUrl
+    Object
+      .keys(this.mappingPaths)
+      .forEach((origin) => {
+        let target = this.mappingPaths[origin]
+        if (fileUrl.match(new RegExp(`^${origin}`))) {
+          let isUrl = target.match(/(http|https):\/\//)
+          if (isUrl) {
+            filePath = fileUrl
+              .replace(origin, target)
+              // .replace(/\?(.+)$/, '')
+              .replace(/([^:]\/)\/+/g, "$1")
+          } else {
+            let pathTarget = normalize(join(target, '/'))
+            filePath = fileUrl.replace(origin, pathTarget)
+          }
+        }
+      })
+    // console.log('transform', fileUrl, filePath)
     return filePath
-  }
-  getUrlFromFilePath (filePath: string) {
-    let fileUrl = filePath.replace(this.contextPath, this.serverUrl)
-    return fileUrl
   }
   getFeatures (): Array<Promise<any>> {
     var {

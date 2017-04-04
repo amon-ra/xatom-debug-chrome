@@ -1,7 +1,7 @@
 {
   "name": "atom-bugs-chrome",
   "main": "./lib/main",
-  "version": "0.3.9",
+  "version": "0.3.10",
   "author": "Williams Medina <williams.medinaa@gmail.com>",
   "description": "Chrome Debugger Plugin for Atom Bugs",
   "keywords": [],
@@ -21,7 +21,7 @@
     }
   },
   "dependencies": {
-    "atom-bugs-chrome-debugger": "0.0.7",
+    "atom-bugs-chrome-debugger": "0.0.10",
     "atom-package-deps": "^4.4.1"
   },
   "package-deps": [
