@@ -37,7 +37,6 @@ export class ChromeDebugger extends ChromeDebuggingProtocolDebugger {
       Debugger,
       Page
     } = this.domains
-
     Debugger.paused(() => {
       Page.configureOverlay({
         message: 'Paused from Atom Bugs'
@@ -46,7 +45,6 @@ export class ChromeDebugger extends ChromeDebuggingProtocolDebugger {
     Debugger.resumed(() => {
       Page.configureOverlay({})
     })
-
     return [
       Page.enable(),
       Runtime.enable(),
