@@ -15,7 +15,7 @@ export class ChromeDebugger extends ChromeDebuggingProtocolDebugger {
       .forEach((origin) => {
         let target = this.mappingPaths[origin]
         if (fileUrl.match(new RegExp(`^${origin}`))) {
-          let isUrl = target.match(/(http|https):\/\//)
+          let isUrl = target.match(/(http|https|ws):\/\//)
           if (isUrl) {
             filePath = fileUrl
               .replace(origin, target)
