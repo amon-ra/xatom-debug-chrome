@@ -1,4 +1,4 @@
-import { ChromeDebuggingProtocolPlugin } from 'atom-bugs-chrome-debugger/lib/plugin'
+import { ChromeDebuggingProtocolPlugin } from '/Users/willyelm/Github/atom-bugs-chrome-debugger/lib/plugin'
 import { ChromeLauncher } from './chrome-launcher'
 import { ChromeDebugger } from './chrome-debugger'
 import { BinaryType, ChromeOptions } from './chrome-options'
@@ -49,7 +49,6 @@ export class ChromePlugin extends ChromeDebuggingProtocolPlugin {
     this.disableConsole()
     let socketUrl = await this.launcher.start()
     await this.debugger.connect(socketUrl)
-    await this.setCurrentBreakpoints()
     this.enableConsole()
     await this.debugger.domains.Page.reload()
     // set toolbar as run
