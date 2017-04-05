@@ -1,4 +1,4 @@
-import { ChromeDebuggingProtocolDebugger } from '/Users/willyelm/Github/atom-bugs-chrome-debugger/lib/debugger'
+import { ChromeDebuggingProtocolDebugger } from 'atom-bugs-chrome-debugger/lib/debugger'
 import { join, normalize } from 'path'
 
 export class ChromeDebugger extends ChromeDebuggingProtocolDebugger {

@@ -1,4 +1,4 @@
-import { ChromeDebuggingProtocolLauncher } from '/Users/willyelm/Github/atom-bugs-chrome-debugger/lib/launcher'
+import { ChromeDebuggingProtocolLauncher } from 'atom-bugs-chrome-debugger/lib/launcher'
 import { type, arch } from 'os'
 
 export interface Page {
