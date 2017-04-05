@@ -13,16 +13,18 @@ export class ChromeLauncher extends ChromeDebuggingProtocolLauncher {
   public hostName: string
   public portNumber: number
   public customBinaryPath: string
+  public url: string
   getLauncherArguments () {
     return [
       `--remote-debugging-address=${this.hostName}`,
       `--remote-debugging-port=${this.portNumber}`,
-      '--no-first-run',
+      // '--no-first-run',
+      // '--no-default-browser-check',
       '--disable-extensions',
       '--disable-component-extensions-with-background-pages',
-      '--no-default-browser-check',
       // '--num-raster-threads=4',
-      '--user-data-dir=$(mktemp -d -t \'chrome-remote_data_dir\')'
+      '--user-data-dir=$(mktemp -d -t \'chrome-remote_data_dir\')',
+      this.url
     ]
   }
   getBinaryPath (): string {

@@ -3,10 +3,16 @@ import { join, normalize } from 'path'
 
 export class ChromeDebugger extends ChromeDebuggingProtocolDebugger {
   public basePath: string
-  public mappingPaths: Object
+  public mappingPaths: Object = {}
   public serverUrl: string
   constructor () {
     super()
+  }
+  setMappings (value: Object) {
+    this.mappingPaths = value || {}
+  }
+  addMapping(mappingPath: string, mappingTarget: string) {
+    this.mappingPaths[mappingPath] = mappingTarget
   }
   getFilePathFromUrl (fileUrl: string): string {
     let filePath = fileUrl
@@ -27,16 +33,10 @@ export class ChromeDebugger extends ChromeDebuggingProtocolDebugger {
           }
         }
       })
-    // console.log('transform', fileUrl, filePath)
     return filePath
   }
-  getFeatures (): Array<Promise<any>> {
-    var {
-      Profiler,
-      Runtime,
-      Debugger,
-      Page
-    } = this.domains
+  async didConnect (domains): Promise<any> {
+    var { Runtime, Debugger, Page } = domains
     Debugger.paused(() => {
       Page.configureOverlay({
         message: 'Paused from Atom Bugs'
@@ -45,13 +45,13 @@ export class ChromeDebugger extends ChromeDebuggingProtocolDebugger {
     Debugger.resumed(() => {
       Page.configureOverlay({})
     })
-    return [
+    return await Promise.all([
       Page.enable(),
       Runtime.enable(),
       Debugger.enable(),
       Debugger.setBreakpointsActive({
         active: true
       })
-    ]
+    ])
   }
 }

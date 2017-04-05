@@ -2,7 +2,7 @@ import { ChromeDebuggingProtocolPlugin } from 'atom-bugs-chrome-debugger/lib/plu
 import { ChromeLauncher } from './chrome-launcher'
 import { ChromeDebugger } from './chrome-debugger'
 import { BinaryType, ChromeOptions } from './chrome-options'
-import { join } from 'path'
+import { normalize, join } from 'path'
 
 export class ChromePlugin extends ChromeDebuggingProtocolPlugin {
 
@@ -15,10 +15,6 @@ export class ChromePlugin extends ChromeDebuggingProtocolPlugin {
   constructor () {
     super()
     this.addEventListeners()
-  }
-  didLoad () {
-    // reload page to activate breakpoints
-    this.debugger.domains.Page.reload()
   }
   async didRun () {
     this.pluginClient.console.clear()
@@ -34,21 +30,28 @@ export class ChromePlugin extends ChromeDebuggingProtocolPlugin {
     this.debugger.basePath = projectPath
     this.debugger.serverUrl = options.serverUrl
 
-    this.debugger.mappingPaths = {}
-    this.debugger.mappingPaths[options.serverUrl] = contextPath
-    this.debugger.mappingPaths[contextPath] = options.serverUrl
+    this.debugger.setMappings({})
+    this.debugger.addMapping(options.serverUrl, contextPath)
+    this.debugger.addMapping(contextPath, options.serverUrl)
+    let defaultMappings = {
+      'webpack:///': '.',
+      'webpack:///~/': './node_modules'
+    }
     // add defined mappings
+    Object.assign(defaultMappings, options.mappingPaths)
     Object
-      .keys(options.mappingPaths || {})
+      .keys(defaultMappings)
       .forEach((origin) => {
-        this.debugger.mappingPaths[origin] = join(projectPath, '/', options.mappingPaths[origin])
+        this.debugger.addMapping(origin, normalize(join(projectPath, '/', defaultMappings[origin], '/')))
       })
 
+    this.launcher.url = options.serverUrl
+    this.disableConsole()
     let socketUrl = await this.launcher.start()
     await this.debugger.connect(socketUrl)
-    await this.debugger.domains.Page.navigate({
-      url: options.serverUrl
-    })
+    await this.setCurrentBreakpoints()
+    this.enableConsole()
+    await this.debugger.domains.Page.reload()
     // set toolbar as run
     this.pluginClient.run()
   }
