@@ -18,11 +18,11 @@ export class ChromeLauncher extends ChromeDebuggingProtocolLauncher {
     return [
       `--remote-debugging-address=${this.hostName}`,
       `--remote-debugging-port=${this.portNumber}`,
-      // '--no-first-run',
-      // '--no-default-browser-check',
+      '--no-first-run',
+      '--no-default-browser-check',
       '--disable-extensions',
       '--disable-component-extensions-with-background-pages',
-      // '--num-raster-threads=4',
+      '--num-raster-threads=4',
       '--user-data-dir=$(mktemp -d -t \'chrome-remote_data_dir\')',
       this.url
     ]

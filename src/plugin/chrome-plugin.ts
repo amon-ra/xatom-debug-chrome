@@ -24,6 +24,8 @@ export class ChromePlugin extends ChromeDebuggingProtocolPlugin {
     this.launcher.portNumber = options.portNumber
     if (options.binaryPath === BinaryType.Custom) {
       this.launcher.customBinaryPath = options.customBinaryPath
+    } else {
+      this.launcher.customBinaryPath = null
     }
     let projectPath = this.pluginClient.getPath()
     let contextPath = join(projectPath, options.basePath)
@@ -48,10 +50,11 @@ export class ChromePlugin extends ChromeDebuggingProtocolPlugin {
     this.launcher.url = options.serverUrl
     this.disableConsole()
     let socketUrl = await this.launcher.start()
-    await this.debugger.connect(socketUrl)
-    this.enableConsole()
-    await this.debugger.domains.Page.reload()
-    // set toolbar as run
-    this.pluginClient.run()
+    if (socketUrl) {
+      this.pluginClient.run()
+      await this.debugger.connect(socketUrl)
+      this.enableConsole()
+      await this.debugger.domains.Page.reload()
+    }
   }
 }
