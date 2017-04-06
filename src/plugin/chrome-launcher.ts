@@ -18,7 +18,7 @@ export class ChromeLauncher extends ChromeDebuggingProtocolLauncher {
     return [
       `--remote-debugging-address=${this.hostName}`,
       `--remote-debugging-port=${this.portNumber}`,
-      '--no-first-run',
+      // '--no-first-run',
       '--no-default-browser-check',
       '--disable-extensions',
       '--disable-component-extensions-with-background-pages',

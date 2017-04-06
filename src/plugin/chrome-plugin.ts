@@ -16,6 +16,14 @@ export class ChromePlugin extends ChromeDebuggingProtocolPlugin {
     super()
     this.addEventListeners()
   }
+
+  didLaunchError (message: string) {
+    atom.notifications.addError('Atom Bugs: Google Chrome', {
+      detail: `Launcher error: ${message}`,
+      dismissable: true
+    })
+  }
+
   async didRun () {
     this.pluginClient.console.clear()
     let options = await this.pluginClient.getOptions()
