@@ -62,7 +62,7 @@ export class ChromePlugin extends ChromeDebuggingProtocolPlugin {
       this.pluginClient.run()
       await this.debugger.connect(socketUrl)
       this.enableConsole()
-      await this.debugger.domains.Page.reload()
+      // await this.debugger.domains.Page.reload()
     }
   }
 }
