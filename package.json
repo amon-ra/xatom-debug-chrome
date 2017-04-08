@@ -30,6 +30,7 @@
   "devDependencies": {
     "@types/atom": "0.0.36",
     "@types/node": "^7.0.8",
+    "atom-package-deps": "^4.5.0",
     "typescript": "^2.2.1"
   }
 }
