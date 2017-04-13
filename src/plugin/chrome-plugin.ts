@@ -25,6 +25,8 @@ export class ChromePlugin extends ChromeDebuggingProtocolPlugin {
   }
 
   async didRun () {
+    this.pluginClient.status.startLoading()
+    this.pluginClient.status.update('Running Chrome')
     this.pluginClient.console.clear()
     let options = await this.pluginClient.getOptions()
     // run chrome
@@ -59,8 +61,11 @@ export class ChromePlugin extends ChromeDebuggingProtocolPlugin {
     this.disableConsole()
     let socketUrl = await this.launcher.start()
     if (socketUrl) {
+      this.pluginClient.status.update('Connecting to Debugger')
       this.pluginClient.run()
       await this.debugger.connect(socketUrl)
+      this.pluginClient.status.update('Debugger Attached')
+      this.pluginClient.status.stopLoading()
       this.enableConsole()
       // await this.debugger.domains.Page.reload()
     }
