@@ -1,6 +1,5 @@
 import { ChromePlugin } from './plugin/chrome-plugin'
 const { CompositeDisposable, Disposable } = require('atom')
-const { install } = require('atom-package-deps')
 
 module.exports = {
   pluginManager: null,
@@ -11,7 +10,7 @@ module.exports = {
     this.pluginManager.addPlugin(this.plugin)
   },
   activate () {
-    install('xatom-debug-chrome', true)
+    require('atom-package-deps').install('xatom-debug-chrome', true)
   },
   deactivate () {
     if (this.plugin) {
