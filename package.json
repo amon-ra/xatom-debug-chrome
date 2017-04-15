@@ -3,9 +3,9 @@
   "main": "./lib/main",
   "version": "0.5.19",
   "author": "Williams Medina <williams.medinaa@gmail.com>",
-  "description": "Chrome Debugger Plugin for Atom Bugs",
+  "description": "Chrome Debugger Plugin for xatom-debug",
   "keywords": [],
-  "repository": "https://github.com/atom-bugs/atom-bugs-chrome",
+  "repository": "https://github.com/xatom-plugins/xatom-debug-chrome",
   "license": "MIT",
   "scripts": {
     "start": "tsc -w"
@@ -21,11 +21,11 @@
     }
   },
   "dependencies": {
-    "atom-bugs-chrome-debugger": "0.1.19",
+    "xatom-debug-chrome-base": "0.1.19",
     "atom-package-deps": "^4.6.0"
   },
   "package-deps": [
-    "atom-bugs"
+    "xatom-debug"
   ],
   "devDependencies": {
     "@types/atom": "0.0.36",

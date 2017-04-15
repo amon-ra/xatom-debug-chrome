@@ -1,4 +1,4 @@
-import { ChromeDebuggingProtocolPlugin } from 'atom-bugs-chrome-debugger/lib/plugin'
+import { ChromeDebuggingProtocolPlugin } from 'xatom-debug-chrome-base/lib/plugin'
 import { ChromeLauncher } from './chrome-launcher'
 import { ChromeDebugger } from './chrome-debugger'
 import { BinaryType, ChromeOptions } from './chrome-options'
