@@ -1,5 +1,5 @@
 {
-  "name": "atom-bugs-chrome",
+  "name": "xatom-debug-chrome",
   "main": "./lib/main",
   "version": "0.5.18",
   "author": "Williams Medina <williams.medinaa@gmail.com>",
