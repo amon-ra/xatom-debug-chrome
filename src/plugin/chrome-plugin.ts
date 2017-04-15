@@ -8,7 +8,7 @@ export class ChromePlugin extends ChromeDebuggingProtocolPlugin {
 
   public options: Object = ChromeOptions
   public name: String = 'Google Chrome'
-  public iconPath: String = 'atom://atom-bugs-chrome/icons/chrome.svg'
+  public iconPath: String = 'atom://xatom-debug-chrome/icons/chrome.svg'
   public launcher: ChromeLauncher = new ChromeLauncher()
   public debugger: ChromeDebugger = new ChromeDebugger()
 
