@@ -1,4 +1,4 @@
-# Atom Bugs Chrome package
+# XAtom Chrome Debbuger
 
 Chrome Debugging Plugin for [atom-bugs](https://github.com/atom-bugs/atom-bugs)
 This Plugin uses the chrome debugging protocol.
@@ -8,7 +8,7 @@ This Plugin uses the chrome debugging protocol.
 ### Installation
 
 ```
-apm install atom-bugs-chrome
+apm install xatom-debug-chrome
 ```
 
 ### Requirements
