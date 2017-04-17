@@ -49,6 +49,6 @@ export class ChromeLauncher extends ChromeDebuggingProtocolLauncher {
           break
       }
     }
-    return binary
+    return this.quote(binary)
   }
 }
