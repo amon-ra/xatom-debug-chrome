@@ -34,7 +34,7 @@ export class ChromeLauncher extends ChromeDebuggingProtocolLauncher {
     } else {
       switch (type()) {
         case 'Darwin':
-          binary = '/Applications/Google\\ Chrome.app/Contents/MacOS/Google\\ Chrome'
+          binary = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
           break
         case 'Linux':
           binary = '/usr/bin/google-chrome'
@@ -42,9 +42,9 @@ export class ChromeLauncher extends ChromeDebuggingProtocolLauncher {
         case 'Windows_NT':
           let osArch = arch()
           if (osArch === 'x86') {
-            binary = 'C:\\Program\ Files\ (x86)\\Google\\Chrome\\Application\\chrome.exe'
+            binary = 'C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe'
           } else {
-            binary = 'C:\\Program\ Files\\Google\\Chrome\\Application\\chrome.exe'
+            binary = 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe'
           }
           break
       }
