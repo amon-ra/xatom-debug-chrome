@@ -65,13 +65,13 @@ export class ChromePlugin extends ChromeDebuggingProtocolPlugin {
         this.pluginClient.status.update('Connecting to Debugger')
         this.pluginClient.run()
         await this.debugger.connect(socketUrl)
-        this.pluginClient.status.update('Debugger Attached')
+        this.pluginClient.status.update('Debugger Attached', 'status-success')
         this.pluginClient.status.stopLoading()
         this.enableConsole()
         // await this.debugger.domains.Page.reload()
       }
     } catch (e) {
-      this.pluginClient.status.update(e)
+      this.pluginClient.status.update(e, 'status-error')
       this.pluginClient.status.stopLoading()
     }
   }
