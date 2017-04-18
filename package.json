@@ -23,14 +23,16 @@
     }
   },
   "dependencies": {
-    "xatom-debug-chrome-base": "0.2.7",
-    "atom-package-deps": "^4.6.0"
+    "atom-package-deps": "^4.6.0",
+    "lodash": "^4.17.4",
+    "xatom-debug-chrome-base": "0.2.9"
   },
   "package-deps": [
     "xatom-debug"
   ],
   "devDependencies": {
     "@types/atom": "0.0.36",
+    "@types/lodash": "^4.14.62",
     "@types/node": "^7.0.8",
     "typescript": "^2.3.0"
   }

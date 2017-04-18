@@ -50,13 +50,13 @@ export class ChromeDebugger extends ChromeDebuggingProtocolDebugger {
     return await Promise.all([
       Page.enable(),
       Runtime.enable(),
-      Runtime.runIfWaitingForDebugger(),
+      // Runtime.runIfWaitingForDebugger(),
       Debugger.enable(),
-      Debugger.setPauseOnExceptions({ state: 'none' }),
-      Debugger.setAsyncCallStackDepth({ maxDepth: 0 }),
-      Debugger.setBreakpointsActive({
-        active: true
-      })
+      // Debugger.setPauseOnExceptions({ state: 'none' }),
+      // Debugger.setAsyncCallStackDepth({ maxDepth: 0 }),
+      // Debugger.setBreakpointsActive({
+      //   active: true
+      // })
     ])
   }
 }

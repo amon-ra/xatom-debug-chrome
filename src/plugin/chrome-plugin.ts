@@ -3,6 +3,7 @@ import { ChromeLauncher } from './chrome-launcher'
 import { ChromeDebugger } from './chrome-debugger'
 import { BinaryType, ChromeOptions } from './chrome-options'
 import { normalize, join } from 'path'
+import { trimEnd } from 'lodash'
 
 export class ChromePlugin extends ChromeDebuggingProtocolPlugin {
 
@@ -41,11 +42,11 @@ export class ChromePlugin extends ChromeDebuggingProtocolPlugin {
       let projectPath = this.pluginClient.getPath()
       let contextPath = join(projectPath, options.basePath)
       this.debugger.basePath = projectPath
-      this.debugger.serverUrl = options.serverUrl
+      this.debugger.serverUrl = trimEnd(options.serverUrl, ['/', ' '] as any)
 
       this.debugger.setMappings({})
-      this.debugger.addMapping(options.serverUrl, contextPath)
-      this.debugger.addMapping(contextPath, options.serverUrl)
+      this.debugger.addMapping(this.debugger.serverUrl, contextPath)
+      this.debugger.addMapping(contextPath, this.debugger.serverUrl)
       let defaultMappings = {
         'webpack:///./': '.',
         'webpack:///./~/': './node_modules'
@@ -58,16 +59,17 @@ export class ChromePlugin extends ChromeDebuggingProtocolPlugin {
           this.debugger.addMapping(origin, normalize(join(projectPath, '/', defaultMappings[origin], '/')))
         })
 
-      this.launcher.url = options.serverUrl
+      this.launcher.url = this.debugger.serverUrl
       this.disableConsole()
       let socketUrl = await this.launcher.start()
       if (socketUrl) {
         this.pluginClient.status.update('Connecting to Debugger')
         this.pluginClient.run()
-        await this.debugger.connect(socketUrl)
-        this.pluginClient.status.update('Debugger Attached', 'status-success')
-        this.pluginClient.status.stopLoading()
-        this.enableConsole()
+        await this.debugger.connect(socketUrl).then(() => {
+          this.pluginClient.status.update('Debugger Attached', 'status-success')
+          this.pluginClient.status.stopLoading()
+          this.enableConsole()
+        })
         // await this.debugger.domains.Page.reload()
       }
     } catch (e) {

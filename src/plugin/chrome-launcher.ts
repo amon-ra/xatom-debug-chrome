@@ -1,5 +1,6 @@
 import { ChromeDebuggingProtocolLauncher } from 'xatom-debug-chrome-base/lib/launcher'
-import { type, arch } from 'os'
+import { type, arch, platform } from 'os'
+import { includes, isEqual, trimEnd } from 'lodash'
 
 export interface Page {
   type: string,
@@ -14,18 +15,28 @@ export class ChromeLauncher extends ChromeDebuggingProtocolLauncher {
   public portNumber: number
   public customBinaryPath: string
   public url: string
+  findPageUrl (page): boolean {
+    return (isEqual(trimEnd(page.url, ['/', ' '] as any), this.url)
+      && page.type === 'page'
+      && page.webSocketDebuggerUrl)
+  }
   getLauncherArguments () {
-    return [
+    let chromeArgs = [
       `--remote-debugging-address=${this.hostName}`,
       `--remote-debugging-port=${this.portNumber}`,
-      // '--no-first-run',
+      '--no-first-run',
       '--no-default-browser-check',
       '--disable-extensions',
       '--disable-component-extensions-with-background-pages',
-      '--num-raster-threads=4',
-      '--user-data-dir=$(mktemp -d -t \'chrome-remote_data_dir\')',
-      this.url
+      // '--num-raster-threads=4'
     ]
+    if (includes(['darwin', 'linux'], platform())) {
+      chromeArgs.push('--user-data-dir=$(mktemp -d -t \'chrome-remote_data_dir\')')
+    }
+    if (this.url) {
+      chromeArgs.push(this.url, 'google.com')
+    }
+    return chromeArgs
   }
   getBinaryPath (): string {
     let binary = '/usr/bin/google-chrome'
