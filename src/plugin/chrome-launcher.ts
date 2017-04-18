@@ -1,6 +1,7 @@
 import { ChromeDebuggingProtocolLauncher } from 'xatom-debug-chrome-base/lib/launcher'
 import { type, arch, platform } from 'os'
 import { includes, isEqual, trimEnd } from 'lodash'
+import { trimPathChars } from './chrome-options'
 
 export interface Page {
   type: string,
@@ -16,7 +17,7 @@ export class ChromeLauncher extends ChromeDebuggingProtocolLauncher {
   public customBinaryPath: string
   public url: string
   findPageUrl (page): boolean {
-    return (isEqual(trimEnd(page.url, ['/', ' '] as any), this.url)
+    return (isEqual(trimEnd(page.url, trimPathChars), this.url)
       && page.type === 'page'
       && page.webSocketDebuggerUrl)
   }

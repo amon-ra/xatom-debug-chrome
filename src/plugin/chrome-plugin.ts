@@ -1,7 +1,7 @@
 import { ChromeDebuggingProtocolPlugin } from 'xatom-debug-chrome-base/lib/plugin'
 import { ChromeLauncher } from './chrome-launcher'
 import { ChromeDebugger } from './chrome-debugger'
-import { BinaryType, ChromeOptions } from './chrome-options'
+import { BinaryType, ChromeOptions, trimPathChars } from './chrome-options'
 import { normalize, join } from 'path'
 import { trimEnd } from 'lodash'
 
@@ -39,10 +39,10 @@ export class ChromePlugin extends ChromeDebuggingProtocolPlugin {
       } else {
         this.launcher.customBinaryPath = null
       }
-      let projectPath = trimEnd(this.pluginClient.getPath(), '/')
-      let contextPath = join(projectPath, trimEnd(options.basePath, '/'))
+      let projectPath = trimEnd(this.pluginClient.getPath(), trimPathChars)
+      let contextPath = join(projectPath, trimEnd(options.basePath, trimPathChars))
       this.debugger.basePath = projectPath
-      this.debugger.serverUrl = trimEnd(options.serverUrl, ['/', ' '] as any)
+      this.debugger.serverUrl = trimEnd(options.serverUrl, trimPathChars)
 
       this.debugger.setMappings({})
       this.debugger.addMapping(this.debugger.serverUrl, contextPath)

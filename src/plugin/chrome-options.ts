@@ -3,6 +3,8 @@ export const BinaryType = {
   Custom: 'Custom'
 }
 
+export const trimPathChars: any = ['/', '\\', ' ']
+
 export const ChromeOptions = {
   binaryPath: {
     type: 'string',

@@ -1,6 +1,8 @@
 import { ChromeDebuggingProtocolDebugger } from 'xatom-debug-chrome-base/lib/debugger'
 import { join, normalize } from 'path'
-import { trimEnd } from 'lodash'
+import { trimStart, trimEnd } from 'lodash'
+import { resolve as resolveUrl } from 'url'
+import { trimPathChars } from './chrome-options'
 
 export class ChromeDebugger extends ChromeDebuggingProtocolDebugger {
   public basePath: string
@@ -17,7 +19,6 @@ export class ChromeDebugger extends ChromeDebuggingProtocolDebugger {
   }
   getFilePathFromUrl (fileUrl: string): string {
     let filePath = fileUrl
-    // console.log('maps', fileUrl, this.mappingPaths)
     Object
       .keys(this.mappingPaths)
       .forEach((origin) => {
@@ -25,17 +26,19 @@ export class ChromeDebugger extends ChromeDebuggingProtocolDebugger {
         if (fileUrl.match(new RegExp(`^${origin}`))) {
           let isUrl = target.match(/(http|https|ws):\/\//)
           if (isUrl) {
-            filePath = fileUrl
-              .replace(origin, target)
+            let urlRelative = fileUrl
+              .replace(origin, '')
               // .replace(/\?(.+)$/, '')
               .replace(/([^:]\/)\/+/g, "$1")
+            filePath = resolveUrl(target, trimStart(urlRelative, trimPathChars))
           } else {
-            let pathTarget = normalize(trimEnd(target, '/'))
-            filePath = fileUrl.replace(origin, pathTarget)
-            // console.log('replaced', fileUrl, filePath)
+            let pathTarget = normalize(trimEnd(target, trimPathChars))
+            let fileRelativePath = trimStart(fileUrl.replace(origin, ''), trimPathChars)
+            filePath = join(pathTarget, fileRelativePath)
           }
         }
       })
+    console.log('map', fileUrl, filePath)
     return filePath
   }
   async didConnect (domains): Promise<any> {
