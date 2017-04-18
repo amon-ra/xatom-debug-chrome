@@ -1,7 +1,7 @@
 {
   "name": "xatom-debug-chrome",
   "main": "./lib/main",
-  "version": "0.6.6",
+  "version": "0.6.7",
   "author": "Williams Medina <williams.medinaa@gmail.com>",
   "description": "Chrome Debugger Plugin for xatom-debug",
   "keywords": [],
