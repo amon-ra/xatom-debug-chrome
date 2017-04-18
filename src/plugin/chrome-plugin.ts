@@ -47,8 +47,8 @@ export class ChromePlugin extends ChromeDebuggingProtocolPlugin {
       this.debugger.addMapping(options.serverUrl, contextPath)
       this.debugger.addMapping(contextPath, options.serverUrl)
       let defaultMappings = {
-        'webpack:///': '.',
-        'webpack:///~/': './node_modules'
+        'webpack:///./': '.',
+        'webpack:///./~/': './node_modules'
       }
       // add defined mappings
       Object.assign(defaultMappings, options.mappingPaths)

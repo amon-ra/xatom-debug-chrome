@@ -23,7 +23,7 @@
     }
   },
   "dependencies": {
-    "xatom-debug-chrome-base": "0.2.3",
+    "xatom-debug-chrome-base": "0.2.5",
     "atom-package-deps": "^4.6.0"
   },
   "package-deps": [

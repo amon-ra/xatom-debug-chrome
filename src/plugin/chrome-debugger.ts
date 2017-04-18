@@ -16,6 +16,7 @@ export class ChromeDebugger extends ChromeDebuggingProtocolDebugger {
   }
   getFilePathFromUrl (fileUrl: string): string {
     let filePath = fileUrl
+    // console.log('maps', fileUrl, this.mappingPaths)
     Object
       .keys(this.mappingPaths)
       .forEach((origin) => {
@@ -30,6 +31,7 @@ export class ChromeDebugger extends ChromeDebuggingProtocolDebugger {
           } else {
             let pathTarget = normalize(join(target, '/'))
             filePath = fileUrl.replace(origin, pathTarget)
+            // console.log('replaced', fileUrl, filePath)
           }
         }
       })
