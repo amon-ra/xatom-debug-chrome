@@ -39,8 +39,8 @@ export class ChromePlugin extends ChromeDebuggingProtocolPlugin {
       } else {
         this.launcher.customBinaryPath = null
       }
-      let projectPath = this.pluginClient.getPath()
-      let contextPath = join(projectPath, options.basePath)
+      let projectPath = trimEnd(this.pluginClient.getPath(), '/')
+      let contextPath = join(projectPath, trimEnd(options.basePath, '/'))
       this.debugger.basePath = projectPath
       this.debugger.serverUrl = trimEnd(options.serverUrl, ['/', ' '] as any)
 

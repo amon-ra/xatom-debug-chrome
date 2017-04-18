@@ -1,5 +1,6 @@
 import { ChromeDebuggingProtocolDebugger } from 'xatom-debug-chrome-base/lib/debugger'
 import { join, normalize } from 'path'
+import { trimEnd } from 'lodash'
 
 export class ChromeDebugger extends ChromeDebuggingProtocolDebugger {
   public basePath: string
@@ -29,7 +30,7 @@ export class ChromeDebugger extends ChromeDebuggingProtocolDebugger {
               // .replace(/\?(.+)$/, '')
               .replace(/([^:]\/)\/+/g, "$1")
           } else {
-            let pathTarget = normalize(join(target, '/'))
+            let pathTarget = normalize(trimEnd(target, '/'))
             filePath = fileUrl.replace(origin, pathTarget)
             // console.log('replaced', fileUrl, filePath)
           }
