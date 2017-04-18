@@ -34,7 +34,7 @@ export class ChromeLauncher extends ChromeDebuggingProtocolLauncher {
       chromeArgs.push('--user-data-dir=$(mktemp -d -t \'chrome-remote_data_dir\')')
     }
     if (this.url) {
-      chromeArgs.push(this.url, 'google.com')
+      chromeArgs.push(this.url)
     }
     return chromeArgs
   }
