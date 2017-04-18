@@ -1,6 +1,6 @@
 import { ChromeDebuggingProtocolDebugger } from 'xatom-debug-chrome-base/lib/debugger'
 import { join, normalize } from 'path'
-import { trimStart, trimEnd } from 'lodash'
+import { trimStart, trimEnd, escapeRegExp } from 'lodash'
 import { resolve as resolveUrl } from 'url'
 import { trimPathChars } from './chrome-options'
 
@@ -23,7 +23,7 @@ export class ChromeDebugger extends ChromeDebuggingProtocolDebugger {
       .keys(this.mappingPaths)
       .forEach((origin) => {
         let target = this.mappingPaths[origin]
-        if (fileUrl.match(new RegExp(`^${origin}`))) {
+        if (fileUrl.match(new RegExp(`^${escapeRegExp(origin)}`))) {
           let isUrl = target.match(/(http|https|ws):\/\//)
           if (isUrl) {
             let urlRelative = fileUrl
@@ -38,7 +38,6 @@ export class ChromeDebugger extends ChromeDebuggingProtocolDebugger {
           }
         }
       })
-    console.log('map', fileUrl, filePath)
     return filePath
   }
   async didConnect (domains): Promise<any> {
