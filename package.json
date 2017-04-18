@@ -25,7 +25,7 @@
   "dependencies": {
     "atom-package-deps": "^4.6.0",
     "lodash": "^4.17.4",
-    "xatom-debug-chrome-base": "0.2.9"
+    "xatom-debug-chrome-base": "0.2.10"
   },
   "package-deps": [
     "xatom-debug"
