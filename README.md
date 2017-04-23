@@ -3,7 +3,7 @@
 Chrome Debugging Plugin for [xatom-debug](https://github.com/willyelm/xatom-debug)
 This Plugin uses the chrome debugging protocol.
 
-![preview](https://raw.githubusercontent.com/xatom-debug/xatom-debug/master/assets/preview.png)
+![preview](https://raw.githubusercontent.com/willyelm/xatom-debug/master/assets/preview.png)
 
 ### Installation
 
