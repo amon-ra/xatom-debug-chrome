@@ -16,6 +16,7 @@ export class ChromePlugin extends ChromeDebuggingProtocolPlugin {
   constructor () {
     super()
     this.addEventListeners()
+    this.launcher.createUserData()
   }
 
   didLaunchError (message: string) {

@@ -50,6 +50,10 @@ export class ChromeDebugger extends ChromeDebuggingProtocolDebugger {
     Debugger.resumed(() => {
       Page.configureOverlay({})
     })
+    console.log('connected')
+    Debugger.scriptParsed(async (params) => {
+      console.log('parsed', params)
+    })
     return await Promise.all([
       Page.enable(),
       Runtime.enable(),
